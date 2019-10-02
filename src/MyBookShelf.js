@@ -5,7 +5,6 @@ import BookSearchResults from "./BookSearchResults";
 
 class MyBookShelf extends React.Component {
   render() {
-    //const bookReadingStatus = ["Currently Reading", "Want to Read", "Read"];
     const {
       books,
       getBookUpdated,

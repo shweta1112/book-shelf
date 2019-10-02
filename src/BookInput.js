@@ -9,22 +9,21 @@ class BookInput extends Component {
     query: ""
   };
 
-  componentDidMount() {
-    this.setState({
-      books: Object.values(this.props.books).map(book => book.id),
-      bookMap: this.props.books
-    });
-  }
-
   onSearch = value => {
-    if (!value) {
-      this.setState({ query: "" });
-    } else {
+    if (value) {
       this.setState({ query: value.trim() });
       BooksAPI.search(value).then(booksArray => {
         let booksMapResponse = {};
         if (!booksArray.error) {
-          booksArray.map(book => (booksMapResponse[book.id] = book));
+          booksArray
+            .map(book => {
+              book.shelf = "none";
+              return book;
+            })
+            .map(book =>
+              this.props.books[book.id] ? this.props.books[book.id] : book
+            )
+            .map(book => (booksMapResponse[book.id] = book));
         } else {
           booksMapResponse = {};
           booksArray = [];
@@ -34,6 +33,8 @@ class BookInput extends Component {
           books: booksArray.map(book => book.id)
         });
       });
+    } else {
+      this.setState({ books: [] });
     }
   };
 
