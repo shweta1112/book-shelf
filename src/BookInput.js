@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import BookSearchResults from "./BookSearchResults";
 import * as BooksAPI from "./BooksAPI";
 import { Link } from "react-router-dom";
+import { debounce } from "lodash";
 class BookInput extends Component {
   state = {
     books: [],
@@ -9,7 +10,7 @@ class BookInput extends Component {
     query: ""
   };
 
-  onSearch = value => {
+  onSearch = debounce(value => {
     if (value) {
       this.setState({ query: value.trim() });
       BooksAPI.search(value).then(booksArray => {
@@ -36,7 +37,7 @@ class BookInput extends Component {
     } else {
       this.setState({ books: [] });
     }
-  };
+  }, 200);
 
   render() {
     return (
