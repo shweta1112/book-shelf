@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "./App.css";
+import "../App.css";
 import BookSearchResults from "./BookSearchResults";
 
 class MyBookShelf extends React.Component {
@@ -10,7 +10,7 @@ class MyBookShelf extends React.Component {
       getBookUpdated,
       currentlyReadingBooks,
       wantToReadBooks,
-      readBooks
+      readBooks,
     } = this.props;
     return (
       <div className="list-books">

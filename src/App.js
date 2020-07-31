@@ -1,7 +1,7 @@
 import React from "react";
-import * as BooksAPI from "./BooksAPI";
-import BookInput from "./BookInput";
-import MyBookShelf from "./MyBookShelf";
+import * as BooksAPI from "./serviceCalls/BooksAPI";
+import BookInput from "../src/components/BookInput";
+import MyBookShelf from "./components/MyBookShelf";
 import "./App.css";
 import { Route } from "react-router-dom";
 
@@ -10,27 +10,27 @@ class BooksApp extends React.Component {
     books: {},
     wantToReadBooks: [],
     currentlyReadingBooks: [],
-    readBooks: []
+    readBooks: [],
   };
   componentDidMount() {
     this.getBooks();
   }
 
   getBooks = () => {
-    BooksAPI.getAll().then(booksArray => {
+    BooksAPI.getAll().then((booksArray) => {
       let booksMap = this.state.books;
-      booksArray.map(book => (booksMap[book.id] = book));
+      booksArray.map((book) => (booksMap[book.id] = book));
       this.setState({
         books: booksMap,
         wantToReadBooks: booksArray
-          .filter(book => book.shelf === "wantToRead")
-          .map(book => book.id),
+          .filter((book) => book.shelf === "wantToRead")
+          .map((book) => book.id),
         currentlyReadingBooks: booksArray
-          .filter(book => book.shelf === "currentlyReading")
-          .map(book => book.id),
+          .filter((book) => book.shelf === "currentlyReading")
+          .map((book) => book.id),
         readBooks: booksArray
-          .filter(book => book.shelf === "read")
-          .map(book => book.id)
+          .filter((book) => book.shelf === "read")
+          .map((book) => book.id),
       });
       console.log(this.state.readBooks);
     });
@@ -40,17 +40,17 @@ class BooksApp extends React.Component {
     const selectedValue = event.target.value;
     let booksCopy = this.state.books;
     BooksAPI.get(bookid)
-      .then(book => {
+      .then((book) => {
         booksCopy[bookid] = book;
       })
       .then(() => {
         booksCopy[bookid].shelf = selectedValue;
-        BooksAPI.update(bookid, selectedValue).then(resp => {
+        BooksAPI.update(bookid, selectedValue).then((resp) => {
           this.setState({
             currentlyReadingBooks: resp["currentlyReading"],
             wantToReadBooks: resp["wantToRead"],
             readBooks: resp["read"],
-            books: booksCopy
+            books: booksCopy,
           });
         });
       });

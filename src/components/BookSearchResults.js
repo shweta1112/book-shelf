@@ -18,6 +18,7 @@ function BookSearchResults(props) {
                       : `url("http://books.google.com/books/content?id=sJf1vQAACAAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api")`
                 }}
               ></div>
+
               <div className="book-shelf-changer">
                 <select
                   onChange={event => props.getBookUpdated(bookid, event)}

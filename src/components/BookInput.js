@@ -1,37 +1,37 @@
 import React, { Component } from "react";
 import BookSearchResults from "./BookSearchResults";
-import * as BooksAPI from "./BooksAPI";
+import * as BooksAPI from "../serviceCalls/BooksAPI";
 import { Link } from "react-router-dom";
 import { debounce } from "lodash";
 class BookInput extends Component {
   state = {
     books: [],
     bookMap: {},
-    query: ""
+    query: "",
   };
 
-  onSearch = debounce(value => {
+  onSearch = debounce((value) => {
     if (value) {
       this.setState({ query: value.trim() });
-      BooksAPI.search(value).then(booksArray => {
+      BooksAPI.search(value).then((booksArray) => {
         let booksMapResponse = {};
         if (!booksArray.error) {
           booksArray
-            .map(book => {
+            .map((book) => {
               book.shelf = "none";
               return book;
             })
-            .map(book =>
+            .map((book) =>
               this.props.books[book.id] ? this.props.books[book.id] : book
             )
-            .map(book => (booksMapResponse[book.id] = book));
+            .map((book) => (booksMapResponse[book.id] = book));
         } else {
           booksMapResponse = {};
           booksArray = [];
         }
         this.setState({
           bookMap: booksMapResponse,
-          books: booksArray.map(book => book.id)
+          books: booksArray.map((book) => book.id),
         });
       });
     } else {
@@ -50,7 +50,7 @@ class BookInput extends Component {
             <input
               type="text"
               placeholder="Search by category"
-              onChange={event => this.onSearch(event.target.value)}
+              onChange={(event) => this.onSearch(event.target.value)}
               value={this.props.query}
             />
           </div>
