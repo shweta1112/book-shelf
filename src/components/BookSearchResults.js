@@ -1,8 +1,8 @@
 import React from "react";
-function BookSearchResults(props) {
+const BookSearchResults = ({ books, bookMap, getBookUpdated }) => {
   return (
     <ol className="books-grid">
-      {props.books.map(bookid => (
+      {books.map((bookid) => (
         <li key={bookid}>
           <div className="book">
             <div className="book-top">
@@ -12,17 +12,17 @@ function BookSearchResults(props) {
                   width: 128,
                   height: 188,
                   backgroundImage:
-                    props.bookMap[bookid].imageLinks &&
-                    props.bookMap[bookid].imageLinks.smallThumbnail
-                      ? `url(${props.bookMap[bookid].imageLinks.smallThumbnail})`
-                      : `url("http://books.google.com/books/content?id=sJf1vQAACAAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api")`
+                    bookMap[bookid].imageLinks &&
+                    bookMap[bookid].imageLinks.smallThumbnail
+                      ? `url(${bookMap[bookid].imageLinks.smallThumbnail})`
+                      : `url("http://books.google.com/books/content?id=sJf1vQAACAAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api")`,
                 }}
               ></div>
 
               <div className="book-shelf-changer">
                 <select
-                  onChange={event => props.getBookUpdated(bookid, event)}
-                  value={props.bookMap[bookid].shelf}
+                  onChange={(event) => getBookUpdated(bookid, event)}
+                  value={bookMap[bookid].shelf}
                 >
                   <option value="move" disabled>
                     Move to...
@@ -34,11 +34,10 @@ function BookSearchResults(props) {
                 </select>
               </div>
             </div>
-            <div className="book-title">{props.bookMap[bookid].title}</div>
+            <div className="book-title">{bookMap[bookid].title}</div>
             <div className="book-authors">
               <div>
-                {props.bookMap[bookid].authors &&
-                  props.bookMap[bookid].authors.join()}
+                {bookMap[bookid].authors && bookMap[bookid].authors.join()}
               </div>
             </div>
           </div>
@@ -46,5 +45,5 @@ function BookSearchResults(props) {
       ))}
     </ol>
   );
-}
+};
 export default BookSearchResults;

@@ -1,93 +1,87 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import * as BooksAPI from "./serviceCalls/BooksAPI";
 import BookInput from "../src/components/BookInput";
 import MyBookShelf from "./components/MyBookShelf";
 import "./App.css";
 import { Route } from "react-router-dom";
 
-class BooksApp extends React.Component {
-  state = {
-    books: {},
-    wantToReadBooks: [],
-    currentlyReadingBooks: [],
-    readBooks: [],
-  };
-  componentDidMount() {
-    this.getBooks();
-  }
+const BooksApp = () => {
+  const [books, setBooks] = useState({});
+  const [wantToReadBooks, setWantToReadBooks] = useState([]);
+  const [currentlyReadingBooks, setCurrentlyReadingBooks] = useState([]);
+  const [readBooks, setReadBooks] = useState([]);
 
-  getBooks = () => {
-    BooksAPI.getAll().then((booksArray) => {
-      let booksMap = this.state.books;
-      booksArray.map((book) => (booksMap[book.id] = book));
-      this.setState({
-        books: booksMap,
-        wantToReadBooks: booksArray
-          .filter((book) => book.shelf === "wantToRead")
-          .map((book) => book.id),
-        currentlyReadingBooks: booksArray
-          .filter((book) => book.shelf === "currentlyReading")
-          .map((book) => book.id),
-        readBooks: booksArray
-          .filter((book) => book.shelf === "read")
-          .map((book) => book.id),
+  useEffect(() => {
+    const getBooks = () => {
+      BooksAPI.getAll().then((booksArray) => {
+        booksArray.map((book) => (books[book.id] = book));
+        setBooks(books);
+        setWantToReadBooks(
+          booksArray
+            .filter((book) => book.shelf === "wantToRead")
+            .map((book) => book.id)
+        );
+        setCurrentlyReadingBooks(
+          booksArray
+            .filter((book) => book.shelf === "currentlyReading")
+            .map((book) => book.id)
+        );
+        setReadBooks(
+          booksArray
+            .filter((book) => book.shelf === "read")
+            .map((book) => book.id)
+        );
       });
-      console.log(this.state.readBooks);
-    });
-  };
+    };
+    getBooks();
+  }, [books]);
 
-  getBookUpdated = (bookid, event) => {
+  const getBookUpdated = (bookid, event) => {
     const selectedValue = event.target.value;
-    let booksCopy = this.state.books;
     BooksAPI.get(bookid)
       .then((book) => {
-        booksCopy[bookid] = book;
+        books[bookid] = book;
       })
       .then(() => {
-        booksCopy[bookid].shelf = selectedValue;
+        books[bookid].shelf = selectedValue;
         BooksAPI.update(bookid, selectedValue).then((resp) => {
-          this.setState({
-            currentlyReadingBooks: resp["currentlyReading"],
-            wantToReadBooks: resp["wantToRead"],
-            readBooks: resp["read"],
-            books: booksCopy,
-          });
+          setCurrentlyReadingBooks(resp["currentlyReading"]);
+          setWantToReadBooks(resp["wantToRead"]);
+          setReadBooks(resp["read"]);
         });
       });
   };
 
-  render() {
-    return (
-      <div className="app">
-        <Route
-          exact
-          path="/"
-          render={() => (
-            <MyBookShelf
-              key={this.state.books.title}
-              books={this.state.books}
-              getBookUpdated={this.getBookUpdated}
-              currentlyReadingBooks={this.state.currentlyReadingBooks}
-              wantToReadBooks={this.state.wantToReadBooks}
-              readBooks={this.state.readBooks}
-            />
-          )}
-        />
-        <Route
-          path="/search"
-          render={({ history }) => (
-            <BookInput
-              books={this.state.books}
-              getBookUpdated={(book, shelf) => {
-                this.getBookUpdated(book, shelf);
-                history.push("/");
-              }}
-            />
-          )}
-        />
-      </div>
-    );
-  }
-}
+  return (
+    <div className="app">
+      <Route
+        exact
+        path="/"
+        render={() => (
+          <MyBookShelf
+            key={books.title}
+            books={books}
+            getBookUpdated={getBookUpdated}
+            currentlyReadingBooks={currentlyReadingBooks}
+            wantToReadBooks={wantToReadBooks}
+            readBooks={readBooks}
+          />
+        )}
+      />
+      <Route
+        path="/search"
+        render={({ history }) => (
+          <BookInput
+            books={books}
+            getBookUpdated={(book, shelf) => {
+              getBookUpdated(book, shelf);
+              history.push("/");
+            }}
+          />
+        )}
+      />
+    </div>
+  );
+};
 
 export default BooksApp;
