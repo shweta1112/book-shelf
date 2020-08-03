@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import * as BooksAPI from "./serviceCalls/BooksAPI";
-import BookInput from "../src/components/BookInput";
-import MyBookShelf from "./components/MyBookShelf";
+import BookInput from "./components/book_input/BookInput.component";
+import MyBookShelf from "./components/my_book_shelf/MyBookShelf.component";
 import "./App.css";
 import { Route } from "react-router-dom";
 

@@ -4,11 +4,15 @@
   "private": true,
   "dependencies": {
     "debounce": "^1.2.0",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2",
+    "jest": "24.9.0",
     "prop-types": "^15.6.2",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-router-dom": "^5.0.1",
-    "react-scripts": "^3.1.1",
+    "react-scripts": "^3.4.1",
+    "react-test-renderer": "^16.13.1",
     "use-debounce": "^3.0.1"
   },
   "scripts": {

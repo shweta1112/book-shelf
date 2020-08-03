@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import BookSearchResults from "./BookSearchResults";
-import * as BooksAPI from "../serviceCalls/BooksAPI";
+import BookSearchResults from "../book_serach_result/BookSearchResults.component";
+import * as BooksAPI from "../../serviceCalls/BooksAPI";
 import { Link } from "react-router-dom";
 import { debounce } from "lodash";
 const BookInput = ({ books, getBookUpdated }) => {

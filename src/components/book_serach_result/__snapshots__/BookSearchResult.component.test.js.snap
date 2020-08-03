@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<MyBookShelf/> should match snapshort 1`] = `null`;

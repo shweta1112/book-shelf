@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "../App.css";
-import BookSearchResults from "./BookSearchResults";
+import "../../App.css";
+import BookSearchResults from "../book_serach_result/BookSearchResults.component";
 
 const MyBookShelf = ({
   books,
